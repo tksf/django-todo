@@ -47,15 +47,6 @@ class NewVisitorTest(LiveServerTestCase):
 		self.check_for_row_in_list_table('1: Buy peacock feathers')
 
 		# time.sleep(10)
-		# table = self.browser.find_element_by_id('id_list_table')
-		# rows = table.find_elements_by_tag_name('tr')
-		# self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
-		# self.assertTrue(
-		# 	any(row.text == '1: Buy peacock feathers' for row in rows),
-		# 	"New to-do item did not appear in table -- its text was:\n%s" % (
-		# 		table.text,
-		# 	)
-		# )
 
 		# still a box to enter another item
 		inputbox = self.browser.find_element_by_id('id_new_item')
@@ -68,10 +59,6 @@ class NewVisitorTest(LiveServerTestCase):
 		self.check_for_row_in_list_table('1: Buy peacock feathers')
 		self.check_for_row_in_list_table('2: Use peacock feathers to make a fly')
 
-		# table = self.browser.find_element_by_id('id_list_table')
-		# rows = table.find_elements_by_tag_name('tr')
-		# self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
-		# self.assertIn('2: Use peacock feathers to make a fly', [row.text for row in rows])
 
 		self.browser.quit()
 		self.browser = webdriver.Firefox()
@@ -96,9 +83,42 @@ class NewVisitorTest(LiveServerTestCase):
 		self.assertNotIn('Buy peacock feathers', page_text)
 		self.assertIn('Buy milk', page_text)
 
-
 		# self.fail('Finish the test!')
+
+	def test_layout_and_styling(self):
+
+		# edith gos to homepage
+		self.browser.get(self.live_server_url)
+		self.browser.set_window_size(1024, 768)
+
+		# she notices input bx is nicely centered
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		self.assertAlmostEqual(
+			inputbox.location['x'] + inputbox.size['width'] / 2,
+			512,
+			delta=5
+		)
+
+		# she starts a new list and input is nicely centered
+		inputbox.send_keys('testing\n')
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		self.assertAlmostEqual(
+			inputbox.location['x'] + inputbox.size['width'] / 2,
+			512,
+			delta=5
+		)
+
+
 
 # if __name__ == '__main__':
 # 	unittest.main(warnings='ignore')
+
+
+
+
+
+
+
+
+
 
